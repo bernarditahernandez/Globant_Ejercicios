@@ -38,7 +38,7 @@ with DAG(
         write_disposition='WRITE_TRUNCATE',  # Sobrescribe la tabla si ya existe
         create_disposition='CREATE_IF_NEEDED',  # Crea la tabla si no existe
         field_delimiter=',',  # Especificamos que el delimitador es coma
-        autodetect=True,  # Detectamos el esquema automáticamente
+        schema_fields=[{"name": "id", "type": "INTEGER", "mode": "REQUIRED"},{"name": "job", "type": "STRING", "mode": "REQUIRED"},]
     )
      # task 2 departments Operador para cargar datos desde GCS a BigQuery
     load_departments = GCSToBigQueryOperator(
@@ -51,7 +51,7 @@ with DAG(
         write_disposition='WRITE_TRUNCATE',  # Sobrescribe la tabla si ya existe
         create_disposition='CREATE_IF_NEEDED',  # Crea la tabla si no existe
         field_delimiter=',',  # Especificamos que el delimitador es coma
-        autodetect=True,  # Detectamos el esquema automáticamente
+        schema_fields=[{"name": "id", "type": "INTEGER", "mode": "REQUIRED"},{"name": "department", "type": "STRING", "mode": "REQUIRED"},]
     )
      # task 3 hired employees Operador para cargar datos desde GCS a BigQuery
     load_hired_employees = GCSToBigQueryOperator(
@@ -64,7 +64,11 @@ with DAG(
         write_disposition='WRITE_TRUNCATE',  # Sobrescribe la tabla si ya existe
         create_disposition='CREATE_IF_NEEDED',  # Crea la tabla si no existe
         field_delimiter=',',  # Especificamos que el delimitador es coma
-        autodetect=True,  # Detectamos el esquema automáticamente
+        schema_fields=[{"name": "id", "type": "INTEGER", "mode": "REQUIRED"},
+        {"name": "name", "type": "STRING", "mode": "NULLABLE"},
+        {"name": "datetime", "type": "STRING", "mode": "NULLABLE"},
+        {"name": "department_id", "type": "INTEGER", "mode": "NULLABLE"},
+        {"name": "job_id", "type": "INTEGER", "mode": "NULLABLE"},]
     )
     
     load_jobs
